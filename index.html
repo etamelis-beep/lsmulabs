@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LSMU Laboratories Directory</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --blue: rgba(12, 95, 168, 1);
+    --blue-dark: rgba(8, 65, 116, 1);
+    --blue-mid: rgba(20, 120, 200, 1);
+    --blue-light: rgba(12, 95, 168, 0.08);
+    --blue-lighter: rgba(12, 95, 168, 0.04);
+    --blue-border: rgba(12, 95, 168, 0.18);
+    --blue-glow: rgba(12, 95, 168, 0.15);
+    --white: #ffffff;
+    --off-white: #f7f9fc;
+    --text-dark: #0d1b2a;
+    --text-mid: #3a5068;
+    --text-light: #6b87a0;
+    --border: rgba(12, 95, 168, 0.12);
+    --footer-bg: rgba(8, 65, 116, 1);
+  }
+
+  [data-theme="dark"] {
+    --white: #1a2635;
+    --off-white: #0f172a;
+    --text-dark: #f1f5f9;
+    --text-mid: #94a3b8;
+    --text-light: #64748b;
+    --border: rgba(255, 255, 255, 0.1);
+    --blue-light: rgba(12, 95, 168, 0.2);
+    --blue-lighter: rgba(12, 95, 168, 0.1);
+    --blue-border: rgba(255, 255, 255, 0.15);
+    --footer-bg: #020617;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--off-white);
+    color: var(--text-dark);
+    min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+    zoom: 1.25;
+  }
+
+  header {
+    background: var(--blue);
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    border-bottom: 4px solid var(--blue-dark);
+  }
+
+  .header-bg-pattern {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.07) 0%, transparent 50%),
+      radial-gradient(circle at 10% 80%, rgba(255,255,255,0.05) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .header-grid-lines {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .collab-notice {
+    font-size: 13px; line-height: 1.6; color: var(--text-mid);
+    background: var(--blue-light); border: 1px solid var(--blue-border);
+    border-radius: 10px; padding: 0.85rem 1.1rem; margin-bottom: 1.5rem;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+  }
+  .collab-notice::before {
+    content: ''; display: block; flex-shrink: 0; width: 3px;
+    border-radius: 99px; background: var(--blue); align-self: stretch; min-height: 100%;
+  }
+  .collab-notice p { margin-bottom: 2px; font-weight: 400; }
+  .collab-notice p:last-child { margin-bottom: 0; }
+  .collab-notice strong { color: var(--text-dark); font-weight: 600; }
+  .collab-notice a { color: var(--blue); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; transition: opacity 0.2s; }
+  .collab-notice a:hover { opacity: 0.75; }
+
+  .theme-toggle {
+    position: fixed; bottom: 2rem; left: 2rem; z-index: 100;
+    background: var(--blue); color: white; border: none;
+    width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s;
+  }
+  .theme-toggle:hover { transform: scale(1.1); }
+
+  #back-to-top {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 100;
+    background: var(--blue); color: white; border: none;
+    width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+    display: none; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s, opacity 0.2s;
+  }
+  #back-to-top:hover { transform: translateY(-4px); }
+
+  .header-inner {
+    position: relative; z-index: 1; display: flex; align-items: center;
+    gap: 0; min-height: 240px;
+  }
+
+  .header-visual {
+    width: 340px; flex-shrink: 0; position: relative;
+    align-self: stretch; overflow: hidden; display: flex;
+    align-items: center; justify-content: center;
+  }
+  .header-visual img {
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: 0.35; mix-blend-mode: luminosity;
+    filter: brightness(1.2) contrast(1.1);
+  }
+  .header-visual::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 60%, var(--blue) 100%);
+  }
+
+  .header-text { flex: 1; padding: 3rem 2.5rem 2.5rem 2rem; }
+  .header-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 0.6rem;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 600;
+    color: var(--white); line-height: 1.15; margin-bottom: 0.6rem;
+  }
+  header p { font-size: 14px; color: rgba(255,255,255,0.65); font-weight: 300; line-height: 1.6; max-width: 420px; }
+
+  .header-stats {
+    display: flex; gap: 2rem; margin-top: 1.4rem;
+    padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,0.15);
+  }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--white); }
+  .stat-label { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+
+  #sticky-search {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--off-white); padding: 0.75rem 0 0; margin-bottom: 0;
+    transition: background 0.3s, box-shadow 0.2s;
+    border-bottom: 2px solid var(--blue-border);
+  }
+  #sticky-search.scrolled { box-shadow: 0 4px 20px rgba(12,95,168,0.13); }
+
+  #search-wrap { position: relative; margin-bottom: 0; }
+  #search-wrap svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--blue); pointer-events: none; opacity: 0.6; }
+  #search {
+    width: 100%; padding: 14px 16px 14px 48px; font-size: 15px;
+    font-family: 'Source Sans 3', sans-serif; border: 1.5px solid var(--blue-border);
+    border-radius: 10px; background: var(--white); color: var(--text-dark);
+    outline: none; transition: border-color .2s, box-shadow .2s, background 0.3s;
+    box-shadow: 0 2px 8px rgba(12,95,168,0.06);
+  }
+  #search:focus { border-color: var(--blue); box-shadow: 0 0 0 4px var(--blue-glow), 0 2px 8px rgba(12,95,168,0.1); }
+
+  #search-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    min-height: 30px; padding: 0.45rem 0 0.55rem; gap: 12px;
+  }
+
+  #directory { margin-top: 1.75rem; }
+
+  #results-count { font-size: 12.5px; color: var(--text-light); font-weight: 500; letter-spacing: 0.01em; transition: opacity 0.2s; }
+  #results-count .count-num { color: var(--blue); font-weight: 700; }
+
+  #expand-collapse-btn {
+    font-size: 12px; font-weight: 600; font-family: 'Source Sans 3', sans-serif;
+    color: var(--blue); background: var(--blue-light); border: 1px solid var(--blue-border);
+    border-radius: 6px; padding: 4px 12px; cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+    transition: background 0.15s, color 0.15s; letter-spacing: 0.02em; white-space: nowrap;
+  }
+  #expand-collapse-btn:hover { background: var(--blue-border); }
+  #expand-collapse-btn svg { flex-shrink: 0; }
+
+  .lab-breadcrumb {
+    display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
+    padding: 0.55rem 1.4rem 0; font-size: 11.5px; color: var(--text-light);
+    font-weight: 400; letter-spacing: 0.01em; opacity: 0.85;
+  }
+  .lab-breadcrumb span { color: var(--text-mid); }
+  .lab-breadcrumb .bc-sep { color: var(--text-light); opacity: 0.5; font-size: 10px; margin: 0 1px; }
+  .lab-breadcrumb .bc-leaf { color: var(--blue-dark); font-weight: 600; }
+  [data-theme="dark"] .lab-breadcrumb .bc-leaf { color: var(--blue-mid); }
+
+  .lab.search-match .lab-btn { background: rgba(12, 95, 168, 0.07); }
+  .lab.search-match { box-shadow: inset 3px 0 0 var(--blue); }
+  [data-theme="dark"] .lab.search-match { box-shadow: inset 3px 0 0 var(--blue-mid); }
+
+  mark { background: rgba(255, 200, 0, 0.35); color: inherit; border-radius: 2px; padding: 0 1px; }
+  [data-theme="dark"] mark { background: rgba(255, 200, 0, 0.22); }
+
+  .academy { margin-bottom: 3rem; }
+  .academy-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 2px solid var(--blue-border); }
+  .academy-badge { width: 36px; height: 36px; border-radius: 8px; background: var(--blue); color: white; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; flex-shrink: 0; }
+  .academy-label { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 600; color: var(--text-dark); }
+
+  .faculty { margin-bottom: 1.5rem; border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--white); box-shadow: 0 2px 12px rgba(12,95,168,0.04); }
+  .faculty-meta { padding: 1rem 1.4rem; background: linear-gradient(135deg, var(--blue-light) 0%, transparent 100%); border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; }
+  .faculty-icon { width: 32px; height: 32px; border-radius: 7px; background: var(--blue); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .faculty-icon svg { color: white; }
+  .faculty-name { font-size: 12px; font-weight: 600; color: var(--blue-dark); letter-spacing: 0.08em; text-transform: uppercase; }
+  [data-theme="dark"] .faculty-name { color: var(--blue-mid); }
+  .faculty-desc { font-size: 12.5px; color: var(--text-light); margin-top: 3px; }
+
+  .labs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .labs-grid .lab { border-right: 1px solid var(--border); }
+  .labs-grid .lab:nth-child(even) { border-right: none; }
+
+  .lab { border-bottom: 1px solid var(--border); }
+  .lab-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.4rem; background: none; border: none; cursor: pointer; text-align: left; gap: 12px; transition: background .15s; color: var(--text-dark); }
+  .lab-btn:hover { background: var(--blue-lighter); }
+  .lab.open .lab-btn { background: var(--blue-light); }
+  .lab-details { display: none; border-top: 1px solid var(--border); background: var(--off-white); }
+  .lab.open .lab-details { display: block; }
+  .lab.open .chevron { transform: rotate(180deg); }
+  .chevron { transition: transform 0.2s; }
+
+  .detail-row { display: flex; gap: 10px; padding: 0.75rem 1.4rem; font-size: 13px; color: var(--text-mid); border-bottom: 1px solid var(--border); }
+  .detail-label { font-weight: 600; color: var(--text-dark); margin-right: 6px; font-size: 11px; text-transform: uppercase; }
+
+  .dropdown-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; background: none; border: none; cursor: pointer; padding: 4px 0; color: var(--text-dark); }
+  .dropdown-toggle-label { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+  .dropdown-count { font-size: 10px; background: var(--blue); color: white; border-radius: 99px; padding: 1px 6px; margin-left: 6px; }
+  .dropdown-body { display: none; padding-top: 8px; }
+  .dropdown-section.open .dropdown-body { display: block; }
+  .dropdown-section.open .dropdown-chevron { transform: rotate(180deg); }
+
+  .services-list, .equipment-list { list-style: none; padding-left: 4px; }
+  .services-list li, .equipment-list li { font-size: 13px; color: var(--text-mid); padding: 3px 0 3px 16px; position: relative; }
+  .services-list li::before { content: ''; position: absolute; left: 4px; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: var(--blue); }
+
+  .hidden { display: none !important; }
+  .no-results { text-align: center; padding: 3rem 1rem; color: var(--text-light); display: none; }
+
+  footer { background: var(--footer-bg); color: rgba(255,255,255,0.5); text-align: center; font-size: 12px; padding: 2rem; transition: background 0.3s; }
+  footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+
+  @media (max-width: 800px) {
+    .header-inner { flex-direction: column; align-items: flex-start; }
+    .header-visual { display: none; }
+    .header-text { padding-top: 1rem; }
+    .labs-grid { grid-template-columns: 1fr; }
+    .labs-grid .lab { border-right: none; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" id="theme-toggle" title="Toggle Dark/Light Mode">
+  <svg id="sun-icon" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+  </svg>
+</button>
+
+<button id="back-to-top" title="Back to Top">
+  <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+    <path d="M18 15l-6-6-6 6"/>
+  </svg>
+</button>
+
+<header>
+  <div class="header-bg-pattern"></div>
+  <div class="header-grid-lines"></div>
+  <div class="header-inner">
+    <div class="header-visual">
+      <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=700&q=80" alt="Medical laboratory" />
+    </div>
+    <div class="header-text">
+      <div class="header-eyebrow">Lithuanian University of Health Sciences</div>
+      <h1>Laboratories Directory</h1>
+      <p>Faculties &amp; Research Laboratories — Medical Academy &amp; Veterinary Academy</p>
+      <div class="header-stats">
+        <div class="stat">
+          <span class="stat-num" id="stat-labs">—</span>
+          <span class="stat-label">Laboratories</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">2</span>
+          <span class="stat-label">Academies</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="stat-faculties">—</span>
+          <span class="stat-label">Faculties</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="stat-institutes">—</span>
+          <span class="stat-label">Institutes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="collab-notice">
+    <p>A curated directory of primary research facilities. For collaboration inquiries or infrastructure access, contact the <strong>Health Innovation Development Centre</strong> at <a href="mailto:sivc@lsmu.lt">sivc@lsmu.lt</a>.</p>
+  </div>
+  <div id="sticky-search">
+    <div id="search-wrap">
+      <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input id="search" type="text" placeholder="Search by service, equipment, lab name, or keyword…" autocomplete="off" />
+    </div>
+    <div id="search-meta">
+      <span id="results-count"></span>
+      <button id="expand-collapse-btn" title="Expand or collapse all labs">
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 9l8 6 8-6"/></svg>
+        Expand All
+      </button>
+    </div>
+  </div>
+
+  <div id="no-results" class="no-results">
+    <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="margin-bottom:1rem; opacity:0.3;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <div>No laboratories match your search.</div>
+  </div>
+  <div id="directory"></div>
+</main>
+
+<footer>
+  © Lithuanian University of Health Sciences · <a href="https://www.lsmu.lt" target="_blank">lsmu.lt</a>
+</footer>
+
+<script>
+const data = [
+  {
+    academy: "Medical Academy",
+    badge: "I",
+    faculties: [
+      {
+        name: "Faculty of Medicine",
+        icon: "stethoscope",
+        desc: "Houses the majority of the university's high-tech clinical and fundamental research laboratories.",
+        labs: [
+          // ── Institute of Anatomy (7 labs) ──
+          { title: "Ultramicrotomy Laboratory", parent: "Institute of Anatomy", contact: "anatomija@lsmu.lt · +370 37 327 239",
+            services: ["Tissue sectioning for electron microscopy", "Ultra-thin section preparation", "Sample embedding and trimming"],
+            equipment: ["Ultramicrotome (Leica UC7)", "Diamond knives", "Stereomicroscope for section quality control"] },
+          { title: "Electron Microscopy Laboratory", parent: "Institute of Anatomy", contact: "anatomija@lsmu.lt · +370 37 327 239",
+            services: ["Transmission electron microscopy (TEM)", "Scanning electron microscopy (SEM)", "Ultrastructural cell and tissue imaging"],
+            equipment: ["TEM (JEOL JEM-1400)", "SEM with EDX detector", "Sputter coater for sample preparation"] },
+          { title: "Neuroanatomy Laboratory", parent: "Institute of Anatomy", contact: "anatomija@lsmu.lt · +370 37 327 239",
+            services: ["Neuroanatomical mapping", "Brain and spinal cord structural studies", "Histological sectioning of neural tissue"],
+            equipment: ["Cryostat microtome", "Vibratome", "Brightfield & darkfield microscope"] },
+          { title: "Embalming Laboratory", parent: "Institute of Anatomy", contact: "anatomija@lsmu.lt · +370 37 327 239",
+            services: ["Cadaver preparation and preservation", "Anatomical specimen fixation", "Teaching and dissection support"],
+            equipment: ["Embalming station with fluid pump", "Dissection tables", "Fume extraction system"] },
+          { title: "Immunochemistry Laboratory", parent: "Institute of Anatomy", contact: "anatomija@lsmu.lt · +370 37 327 239",
+            services: ["Immunohistochemistry (IHC)", "Antibody staining and detection", "Protein localisation in tissue sections"],
+            equipment: ["Automated tissue stainer", "Confocal fluorescence microscope", "Slide scanner"] },
+          { title: "Neuromorphology Laboratory", parent: "Institute of Anatomy", contact: "anatomija@lsmu.lt · +370 37 327 239",
+            services: ["Morphological analysis of neural structures", "Quantitative neuroanatomy", "Stereological assessment of neural tissue"],
+            equipment: ["Motorised stage microscope with stereology software", "Image analysis workstation", "Vibratome"] },
+          { title: "Microscopy Laboratory", parent: "Institute of Anatomy", contact: "anatomija@lsmu.lt · +370 37 327 239",
+            services: ["Light and fluorescence microscopy", "Digital imaging and image analysis", "Histological slide preparation"],
+            equipment: ["Upright fluorescence microscope", "Inverted phase-contrast microscope", "Digital slide scanner"] },
+
+          // ── Institute for Digestive Research (3 labs) ──
+          { title: "Laboratory of Clinical and Molecular Gastroenterology", parent: "Institute for Digestive Research", contact: "+370 37 326 898 · Eivenių 4, Kaunas",
+            services: ["Molecular diagnostics of gastrointestinal disease", "Biomarker studies in gastroenterology", "Microbiome and genetic risk factor research"],
+            equipment: ["Real-time PCR system", "ELISA plate reader", "Gel electrophoresis system"] },
+          { title: "Laboratory of Surgical Gastroenterology", parent: "Institute for Digestive Research", contact: "+370 37 326 898 · Eivenių 4, Kaunas",
+            services: ["Experimental surgical models of GI disease", "Gastrointestinal surgical research", "Post-operative tissue analysis"],
+            equipment: ["Surgical microscope", "Laparoscopic training system", "Tissue processor"] },
+          { title: "Bioinformatics Laboratory", parent: "Institute for Digestive Research", contact: "+370 37 326 898 · Eivenių 4, Kaunas",
+            services: ["Genomic and proteomic data analysis", "Statistical modelling of biological data", "Database management and data mining"],
+            equipment: ["High-performance computing cluster", "Bioinformatics workstations (Linux)", "Secure data storage server"] },
+
+          // ── Institute of Cardiology (10 labs) ──
+          { title: "Laboratory of Cardiac Pathology", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Histopathological analysis of cardiac tissue", "Morphological studies of ischaemic heart disease", "Post-mortem cardiac examination"],
+            equipment: ["Automated tissue processor", "Rotary microtome", "Staining workstation"] },
+          { title: "Laboratory of Automation of Cardiological Research", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Automated data acquisition in cardiology", "Signal processing and nonlinear analysis", "Cardiovascular system complexity assessment"],
+            equipment: ["Multi-channel data acquisition system", "Custom LabVIEW workstations", "Oscilloscopes and signal generators"] },
+          { title: "Laboratory of Clinical Cardiology", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Clinical cardiovascular assessment", "ECG and haemodynamic monitoring", "Perioperative prognosis and patient cohort studies"],
+            equipment: ["12-lead ECG recorder", "Ambulatory BP monitoring system", "Echocardiography machine"] },
+          { title: "Laboratory of Cell Cultures", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Cardiac cell culture maintenance", "Intracellular signalling pathway studies", "Cytotoxicity and viability assays"],
+            equipment: ["CO₂ incubator", "Biosafety cabinet class II", "Inverted microscope with live-cell imaging"] },
+          { title: "Laboratory of Membrane Biophysics", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Ion channel electrophysiology", "Patch-clamp techniques", "Ischaemic arrhythmia mechanism studies"],
+            equipment: ["Axon Instruments patch-clamp amplifier", "Anti-vibration table with Faraday cage", "Micromanipulator & pipette puller"] },
+          { title: "Laboratory of Molecular Cardiology", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Genetic epidemiology of cardiovascular disease", "Pharmacogenomic studies", "Gene candidate and variant analysis"],
+            equipment: ["RT-qPCR system", "Western blot imaging system", "Nanodrop spectrophotometer"] },
+          { title: "Laboratory of Population Studies", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Epidemiological cardiovascular research", "Population cohort management", "Risk factor analysis and statistics"],
+            equipment: ["Statistical analysis workstations (SPSS/R)", "Secure clinical database server", "Portable BP and anthropometric equipment"] },
+          { title: "Laboratory of Preclinical Drug Research", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Cardiovascular function studies", "Drug application model research", "3D tissue construct development for in vitro studies"],
+            equipment: ["Cell culture systems", "Perfusion apparatus", "Imaging workstation"] },
+          { title: "Laboratory of Drug Target Histopathology", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Biological activity testing (anticancer, antimicrobial, antioxidant)", "Cell 2D and 3D culture permeability studies", "Functionalized nanoformulation development"],
+            equipment: ["Confocal microscope", "Cell viability analyser", "High-content imaging system"] },
+          { title: "Laboratory of Intercellular Interaction Research", parent: "Institute of Cardiology", contact: "+370 37 302 871 · Sukilėlių pr. 15, Kaunas",
+            services: ["Connexin gap junction structural-functional studies", "Heart and neural cell network modelling", "Connexin role in cardiovascular disease"],
+            equipment: ["Electrophysiology rig", "Fluorescence microscope", "Patch-clamp system"] },
+
+          // ── Department of Laboratory Medicine ──
+          { title: "Department of Laboratory Medicine", parent: "Department of Laboratory Medicine (Kauno Klinikos)", contact: "Eiveniu 2, Kaunas (Kauno Klinikos)",
+            services: ["Clinical chemistry diagnostics", "Haematology analysis", "Immunology testing for LSMU Hospital Kauno Klinikos"],
+            equipment: ["Beckman Coulter chemistry analyser", "Haematology analyser", "Automated immunoassay platform"] },
+
+          // ── Oncology Institute ──
+          { title: "Oncology Institute Laboratories", parent: "Oncology Institute", contact: "Oncology Institute, Faculty of Medicine",
+            services: ["Experimental oncology research", "Tumour biology studies", "Translational cancer research"],
+            equipment: ["Cell culture facilities", "PCR and sequencing platforms", "Flow cytometer"] },
+
+          // ── Institute of Physiology and Pharmacology ──
+          { title: "Institute of Physiology and Pharmacology Laboratories", parent: "Institute of Physiology and Pharmacology", contact: "Faculty of Medicine",
+            services: ["Physiological and pharmacological research", "Experimental drug testing", "Organ and tissue physiology studies"],
+            equipment: ["Isolated organ bath systems", "Data acquisition workstations", "Pharmacological testing equipment"] },
+        ]
+      },
+      {
+        name: "Faculty of Pharmacy",
+        icon: "flask",
+        desc: "Focuses on drug development, pharmaceutical technology, and pharmacognosy research.",
+        labs: [
+          { title: "Laboratories for Drug Synthesis and Analysis", parent: "Institute of Pharmaceutical Technology", contact: "Faculty of Pharmacy office",
+            services: ["Organic synthesis of pharmaceutical compounds", "HPLC and spectroscopic analysis", "Drug purity and stability testing"],
+            equipment: ["HPLC system with UV/MS detector", "NMR spectrometer", "Rotary evaporator and synthesis reactors"] },
+          { title: "Laboratory of Pharmacognosy", parent: "Department of Pharmacognosy", contact: "Faculty of Pharmacy office",
+            services: ["Herbal medicine research", "Phytochemical extraction and identification", "Bioactivity screening of plant extracts"],
+            equipment: ["Soxhlet extraction apparatus", "Thin-layer chromatography (TLC) system", "UV-Vis spectrophotometer"] },
+          { title: "Extemporaneous Medicine Preparation Laboratory", parent: "LSMU University Pharmacy", contact: "LSMU Pharmacy · eshop.lsmu.lt",
+            services: ["Compounding of individualised medicines", "Quality control of extemporaneous preparations", "Training in pharmaceutical formulation"],
+            equipment: ["Pharmaceutical balance and mixing equipment", "Ointment mill", "Laminar flow workbench"] },
+          { title: "Analytical and Toxicological Chemistry Laboratories", parent: "Department of Analytical and Toxicological Chemistry", contact: "Faculty of Pharmacy office",
+            services: ["Toxicological analysis of pharmaceuticals", "Analytical method development and validation", "Drug metabolite and residue analysis"],
+            equipment: ["GC-MS system", "LC-MS/MS platform", "Atomic absorption spectrometer"] },
+          { title: "Drug Chemistry Laboratories", parent: "Department of Drug Chemistry", contact: "Faculty of Pharmacy office",
+            services: ["Medicinal chemistry and drug design", "Structure-activity relationship studies", "Synthesis and characterisation of drug candidates"],
+            equipment: ["NMR spectrometer", "Mass spectrometer", "Preparative HPLC system"] },
+        ]
+      },
+      {
+        name: "Faculty of Public Health",
+        icon: "globe",
+        desc: "Research on population health, epidemiology, and health management.",
+        labs: [
+          { title: "Health Research Institute Laboratories", parent: "Health Research Institute", contact: "Faculty of Public Health office",
+            services: ["Epidemiological studies and population health surveys", "Health behaviour and risk factor research", "Health management and policy analysis"],
+            equipment: ["Statistical analysis workstations (SPSS, SAS, R)", "Secure data management systems", "Environmental measurement equipment"] },
+        ]
+      },
+      {
+        name: "Faculty of Nursing",
+        icon: "heart",
+        desc: "Behavioural medicine, psychophysiology, and nursing science research.",
+        labs: [
+          { title: "Laboratory for Stress and Psychosomatic Research", parent: "Behavioral Medicine Institute", contact: "Faculty of Nursing office",
+            services: ["Psychophysiological stress measurement", "Mind–body interaction studies", "Psychosomatic disorder assessment and research"],
+            equipment: ["Biofeedback system", "Portable ECG and galvanic skin response monitor", "Psychological assessment software"] },
+        ]
+      },
+      {
+        name: "Faculty of Odontology",
+        icon: "tooth",
+        desc: "Oral health research, dental biomaterials, and clinical odontology.",
+        labs: [
+          { title: "Dental and Oral Disease Research Laboratories", parent: "Clinic of Dental and Oral Diseases", contact: "Faculty of Odontology office",
+            services: ["Oral microbiology and pathology studies", "Dental biomaterials testing", "Clinical odontology research"],
+            equipment: ["Dental simulation units", "Microscopy and imaging equipment", "Biomaterial testing apparatus"] },
+        ]
+      },
+      {
+        name: "Neuroscience Institute",
+        icon: "brain",
+        desc: "Fundamental and applied neuroscience with 9 specialised laboratories. Established 2011.",
+        labs: [
+          { title: "Biochemistry Laboratory", parent: "Neuroscience Institute", contact: "+370 37 302 969 · vilmante.borutaite@lsmu.lt",
+            services: ["Cell death and neuroprotection mechanism studies", "Brain ischaemia and neurodegeneration models", "Mitochondrial function and energy metabolism research"],
+            equipment: ["Oxygraph (high-resolution respirometry)", "Spectrophotometer", "Cell culture systems"] },
+          { title: "Biophysics and Bioinformatics Laboratory", parent: "Neuroscience Institute", contact: "+370 37 302 966 · algimantas.krisciukaitis@lsmu.lt",
+            services: ["Multimodal biomedical signal and image analysis", "Biophysical modelling of tissue properties", "Retinal imaging and ophthalmological diagnostics"],
+            equipment: ["Multi-channel electrophysiology system", "Optical coherence tomography (OCT) device", "High-performance computing workstation"] },
+          { title: "Behavioral Medicine Laboratory", parent: "Neuroscience Institute", contact: "julius.burkauskas@lsmu.lt",
+            services: ["Neuroendocrine and psychological factor studies in neurological disease", "Neuropsychological assessment and profiling", "Psychosomatic and rehabilitation research"],
+            equipment: ["Computerised neuropsychological test battery", "EEG acquisition system", "Physiological monitoring (ECG, skin conductance)"] },
+          { title: "Laboratory of Molecular Neurobiology", parent: "Neuroscience Institute", contact: "+370 37 302 967 · paulina.vaitkiene@lsmu.lt",
+            services: ["Oxidative stress and antioxidant system research", "Gene and protein expression in neurons", "Molecular mechanisms of neurodegeneration"],
+            equipment: ["qPCR system", "Western blot apparatus", "Fluorescence microscope"] },
+          { title: "Laboratory of Molecular Neuro-oncology", parent: "Neuroscience Institute", contact: "+370 37 326 883 · giedrius.steponaitis@lsmu.lt",
+            services: ["CNS tumour (glioma/glioblastoma) molecular marker research", "Epigenetic and RNA profiling of brain tumours", "Tumour stem cell biology and glioma pathogenesis"],
+            equipment: ["Next-generation sequencing platform", "Digital PCR system", "Flow cytometer"] },
+          { title: "Neurophysiology Laboratory", parent: "Neuroscience Institute", contact: "+370 37 302 958 · gytis.svirskis@lsmu.lt",
+            services: ["Neural network mechanism studies", "In vivo and in vitro electrophysiology", "Visual system and sensory processing research"],
+            equipment: ["Multi-electrode array system", "Patch-clamp setup", "Optical stimulation (optogenetics) system"] },
+          { title: "Ophthalmology Laboratory", parent: "Neuroscience Institute", contact: "+370 37 326 991 · rasa.liutkeviciene@lsmu.lt",
+            services: ["Age-related macular degeneration (AMD) phenotype-genotype studies", "Retinal imaging and telemedicine research", "Genetic marker studies in eye disease"],
+            equipment: ["Fundus camera and OCT system", "Visual field analyser", "Genetic analysis workstation"] },
+          { title: "Toxicology Laboratory", parent: "Neuroscience Institute", contact: "+370 37 302 953 · rima.naginiene@lsmu.lt",
+            services: ["Heavy metal and trace element analysis in biological samples", "Environmental neurotoxicology studies", "Biomonitoring of industrial and environmental exposures"],
+            equipment: ["ICP-MS system", "Atomic absorption spectrometer", "HPLC system"] },
+          { title: "Laboratory of Pharmacological Regulation of Pathological Processes and Drug Metabolism", parent: "Neuroscience Institute", contact: "Neuroscience Institute office",
+            services: ["Cytotoxicity and neurotoxicity assays", "Antioxidant system modulation studies", "Natural compound and food supplement pharmacology"],
+            equipment: ["Cell viability analyser (MTT/resazurin)", "Spectrophotometer", "Cell culture facility"] },
+        ]
+      },
+      {
+        name: "Institute of Cardiology",
+        icon: "heart2",
+        desc: "Standalone research institute with 10 laboratories dedicated to fundamental and clinical cardiology.",
+        labs: []  // Already listed under Faculty of Medicine above; intentionally left blank to avoid duplication
+      },
+    ]
+  },
+  {
+    academy: "Veterinary Academy",
+    badge: "II",
+    faculties: [
+      {
+        name: "Faculty of Veterinary Medicine",
+        icon: "paw",
+        desc: "Clinical and diagnostic laboratories, food safety, microbiology, and veterinary pathology.",
+        labs: [
+          { title: "Histopathology Laboratory", parent: "Department of Veterinary Pathobiology", contact: "Faculty of Veterinary Medicine office",
+            services: ["Tissue sectioning and staining", "Microscopic diagnosis of animal diseases", "Post-mortem histological examination"],
+            equipment: ["Rotary microtome", "Automated tissue processor", "H&E staining workstation"] },
+          { title: "Pathology Centre", parent: "Department of Veterinary Pathobiology", contact: "Faculty of Veterinary Medicine office",
+            services: ["Full necropsy and post-mortem services", "Gross and microscopic pathology diagnosis", "Consulting for veterinary pathology cases"],
+            equipment: ["Necropsy table with drainage system", "Digital pathology imaging station", "Specimen storage freezers"] },
+          { title: "Haematology and Blood Biochemistry Laboratory", parent: "Dr. L. Kriaučeliūnas Small Animal Clinic (Clinical Laboratories)", contact: "Small Animal Clinic office",
+            services: ["Complete blood count (CBC)", "Blood biochemistry panel", "Coagulation testing"],
+            equipment: ["Haematology analyser (Sysmex)", "Biochemistry analyser (Idexx Catalyst)", "Coagulation analyser"] },
+          { title: "Hormonal and Immunological Research Laboratory", parent: "Dr. L. Kriaučeliūnas Small Animal Clinic (Clinical Laboratories)", contact: "Small Animal Clinic office",
+            services: ["Hormone level assays (thyroid, cortisol, etc.)", "Immunological panels and antibody titres", "Reproductive endocrinology testing"],
+            equipment: ["ELISA reader and washer", "Chemiluminescence immunoassay analyser", "Centrifuge and sample processor"] },
+          { title: "Cytopathology and Coprological Research Laboratory", parent: "Dr. L. Kriaučeliūnas Small Animal Clinic (Clinical Laboratories)", contact: "Small Animal Clinic office",
+            services: ["Fine needle aspirate cytology", "Faecal parasitology and flotation", "Urinalysis and sediment examination"],
+            equipment: ["Optical microscope with camera", "Centrifuge for sediment analysis", "Flotation centrifuge system"] },
+          { title: "Microbiology Laboratory", parent: "Department of Food Safety and Quality", contact: "Faculty of Veterinary Medicine office",
+            services: ["Microbial contamination testing in food", "Bacterial culture and identification", "Antibiotic resistance screening"],
+            equipment: ["Automated MALDI-TOF mass spectrometer (Bruker)", "Anaerobic chamber", "Automated colony counter"] },
+          { title: "Chemical Analysis of Food Laboratory", parent: "Department of Food Safety and Quality", contact: "Faculty of Veterinary Medicine office",
+            services: ["Heavy metal and pesticide residue detection", "Nutritional composition analysis", "Food additive verification"],
+            equipment: ["GC-MS system", "Atomic absorption spectrometer", "HPLC-MS/MS system"] },
+          { title: "Microbiology and Virology Institute Laboratories", parent: "Institute of Microbiology and Virology", contact: "Faculty of Veterinary Medicine office",
+            services: ["Veterinary microbiology and virology research", "Pathogen identification and characterisation", "Zoonotic disease investigation"],
+            equipment: ["PCR and sequencing platforms", "Biosafety cabinet class II/III", "Virus culture systems"] },
+          { title: "Anatomy and Physiology Department Laboratories", parent: "Department of Anatomy and Physiology (Veterinary)", contact: "Faculty of Veterinary Medicine office",
+            services: ["Veterinary gross anatomy and histology teaching", "Physiological studies in domestic animals", "Tissue preparation and anatomical specimen work"],
+            equipment: ["Dissection facilities", "Microtome and histology equipment", "Physiological monitoring systems"] },
+        ]
+      },
+      {
+        name: "Faculty of Animal Sciences",
+        icon: "dna",
+        desc: "Genetics, animal nutrition, and production technology research.",
+        labs: [
+          { title: "Laboratory of Molecular Genetics", parent: "Institute of Biological Systems and Genetic Research", contact: "Faculty of Animal Sciences office",
+            services: ["DNA extraction and genotyping", "Genetic diversity and population studies", "Marker-assisted selection research"],
+            equipment: ["PCR thermocycler", "Gel electrophoresis with UV transilluminator", "SNP genotyping array platform"] },
+          { title: "Animal Nutrition and Feed Analysis Laboratory", parent: "Institute of Animal Rearing Technologies", contact: "Faculty of Animal Sciences office",
+            services: ["Proximate analysis of animal feed", "Feed additive and supplement testing", "Nutritional recommendations for livestock"],
+            equipment: ["Near-infrared (NIR) feed analyser", "Fibre analyser (ANKOM)", "Kjeldahl nitrogen determination system"] },
+          { title: "Institute of Animal Husbandry Laboratories", parent: "Institute of Animal Husbandry", contact: "Faculty of Animal Sciences office",
+            services: ["Livestock production research", "Animal welfare and management studies", "Reproductive biology investigations"],
+            equipment: ["Reproductive assessment equipment", "Body condition scoring systems", "Environmental monitoring instruments"] },
+        ]
+      },
+      {
+        name: "University-Wide Research Centres",
+        icon: "beaker",
+        desc: "Cross-faculty shared research infrastructure and specialist centres.",
+        labs: [
+          { title: "Vivarium", parent: "University General Units", contact: "lsmu.lt/apie-lsmu/lsmu-struktura/universiteto-bendrieji-padaliniai/kiti-padaliniai/vivariumas/",
+            services: ["Animal housing for experimental research", "Experimental model preparation and support", "Welfare monitoring for research animals"],
+            equipment: ["Individually ventilated cage systems", "Environmental monitoring stations", "Veterinary examination facilities"] },
+          { title: "Preclinical Research Centre Laboratories", parent: "Preclinical Research Centre", contact: "University General Units office",
+            services: ["Preclinical testing and validation studies", "In vitro and in vivo model development", "GLP-compliant experimental support"],
+            equipment: ["Imaging systems (in vivo)", "Surgical preparation suite", "Histology and sample processing facility"] },
+          { title: "Biological Research Centre", parent: "Biological Research Centre (Neuroscience Institute)", contact: "University General Units office",
+            services: ["Shared bioanalytical and molecular biology services", "Sample storage and biobank management", "Core analytical instrumentation"],
+            equipment: ["Flow cytometer", "Cryogenic storage systems", "High-throughput sequencing access"] },
+          { title: "Zoonoses Centre", parent: "Zoonoses Centre", contact: "lsmu.lt/mokslas-ir-inovacijos/zoonoziu-centras/",
+            services: ["Zoonotic disease monitoring and research", "Interdisciplinary one-health investigations", "Epidemiological surveillance support"],
+            equipment: ["PCR and molecular diagnostics", "Serological testing platforms", "Environmental sampling equipment"] },
+        ]
+      }
+    ]
+  }
+];
+
+// Remove empty faculty (Institute of Cardiology standalone — already covered)
+// Filter out the empty "Institute of Cardiology" pseudo-faculty that has no labs
+data[0].faculties = data[0].faculties.filter(f => f.labs.length > 0);
+
+// Dark Mode Toggle
+const themeBtn = document.getElementById('theme-toggle');
+const sunIcon = `<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
+const moonIcon = `<svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+
+themeBtn.addEventListener('click', () => {
+  const isDark = document.body.getAttribute('data-theme') === 'dark';
+  document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  themeBtn.innerHTML = isDark ? sunIcon : moonIcon;
+});
+
+// Back to Top
+const btt = document.getElementById('back-to-top');
+window.onscroll = () => {
+  const scrolled = document.body.scrollTop > 300 || document.documentElement.scrollTop > 300;
+  btt.style.display = scrolled ? "flex" : "none";
+  const stickyEl = document.getElementById('sticky-search');
+  if (stickyEl) stickyEl.classList.toggle('scrolled', document.documentElement.scrollTop > 10);
+};
+btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// Stats
+let totalLabs = 0, totalFaculties = 0;
+const instituteNames = new Set();
+data.forEach(a => {
+  a.faculties.forEach(f => {
+    totalFaculties++;
+    totalLabs += f.labs.length;
+    f.labs.forEach(lab => instituteNames.add(lab.parent));
+  });
+});
+document.getElementById('stat-labs').textContent = totalLabs;
+document.getElementById('stat-faculties').textContent = totalFaculties;
+document.getElementById('stat-institutes').textContent = instituteNames.size;
+
+function esc(str) { return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function highlight(text, q) {
+  if (!q) return esc(text);
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+  return esc(text).replace(re, '<mark>$1</mark>');
+}
+
+const iconSVGs = {
+  stethoscope: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg>`,
+  flask: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6l1 9H8L9 3z"/><path d="M6.1 15.1A6 6 0 1 0 17.9 15.1"/><path d="M6 3h12"/></svg>`,
+  heart: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+  heart2: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9.5" y1="14.5" x2="14.5" y2="14.5"/></svg>`,
+  paw: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="4" cy="8" r="2"/><path d="M12 17c-2.5 0-5-1.5-5-3.5 0-1.5.7-2.5 1.5-3.5.7-.9 1.5-2 1.5-3"/><path d="M12 17c2.5 0 5-1.5 5-3.5 0-1.5-.7-2.5-1.5-3.5-.7-.9-1.5-2-1.5-3"/><path d="M9 21h6M12 17v4"/></svg>`,
+  dna: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="m17 6-2.5-2.5"/><path d="m14 8-1-1"/><path d="m7 18 2.5 2.5"/><path d="m10 16 1 1"/><path d="m16 9 1.5 1.5"/><path d="m19 12 1.5 1.5"/><path d="m7 6-1.5 1.5"/><path d="m4 9-1.5 1.5"/><path d="m5 12-1.5 1.5"/></svg>`,
+  globe: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+  tooth: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5.5C10 3.5 7 3 5 5c-2.5 2.5-1.5 6.5 0 9 1 1.7 2 4 2 4h2l1-4 1 4h2s1-2.3 2-4c1.5-2.5 2.5-6.5 0-9-2-2-5-1.5-7-.5z"/></svg>`,
+  brain: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-1.07-4.81A3 3 0 0 1 4.5 9.5a3 3 0 0 1 .1-.72A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 1.07-4.81A3 3 0 0 0 19.5 9.5a3 3 0 0 0-.1-.72A2.5 2.5 0 0 0 14.5 2Z"/></svg>`,
+  beaker: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 3h15"/><path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3"/><path d="M6 14h12"/></svg>`,
+};
+
+let allExpanded = false;
+
+function updateExpandBtn() {
+  const btn = document.getElementById('expand-collapse-btn');
+  if (allExpanded) {
+    btn.innerHTML = `<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M20 15l-8-6-8 6"/></svg> Collapse All`;
+  } else {
+    btn.innerHTML = `<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 9l8 6 8-6"/></svg> Expand All`;
+  }
+}
+
+document.getElementById('expand-collapse-btn').addEventListener('click', () => {
+  allExpanded = !allExpanded;
+  document.querySelectorAll('.lab:not(.hidden)').forEach(lab => lab.classList.toggle('open', allExpanded));
+  updateExpandBtn();
+});
+
+function updateResultsCount(count, total, hasQuery) {
+  const el = document.getElementById('results-count');
+  if (!hasQuery) {
+    el.innerHTML = `<span class="count-num">${total}</span> laboratories across all faculties`;
+  } else if (count === 0) {
+    el.innerHTML = `No results found`;
+  } else {
+    el.innerHTML = `<span class="count-num">${count}</span> of ${total} laboratories match`;
+  }
+}
+
+function render(q) {
+  const dir = document.getElementById('directory');
+  const noRes = document.getElementById('no-results');
+  dir.innerHTML = '';
+  const ql = q.toLowerCase().trim();
+  let anyVisible = false;
+  let matchCount = 0;
+
+  data.forEach(academy => {
+    let academyVisible = false;
+    const acDiv = document.createElement('div');
+    acDiv.className = 'academy';
+    const acHeader = document.createElement('div');
+    acHeader.className = 'academy-header';
+    acHeader.innerHTML = `<div class="academy-badge">${esc(academy.badge)}</div><span class="academy-label">${esc(academy.academy)}</span>`;
+    acDiv.appendChild(acHeader);
+
+    academy.faculties.forEach(faculty => {
+      let facVisible = false;
+      const facDiv = document.createElement('div');
+      facDiv.className = 'faculty';
+      const facMeta = document.createElement('div');
+      facMeta.className = 'faculty-meta';
+      const iconHtml = iconSVGs[faculty.icon] || iconSVGs.flask;
+      facMeta.innerHTML = `<div class="faculty-icon">${iconHtml}</div><div><div class="faculty-name">${esc(faculty.name)}</div>${faculty.desc ? `<div class="faculty-desc">${esc(faculty.desc)}</div>` : ''}</div>`;
+      facDiv.appendChild(facMeta);
+
+      const labsGrid = document.createElement('div');
+      labsGrid.className = 'labs-grid';
+
+      faculty.labs.forEach(lab => {
+        const titleMatch = lab.title.toLowerCase().includes(ql);
+        const parentMatch = lab.parent.toLowerCase().includes(ql);
+        const serviceMatch = lab.services.some(s => s.toLowerCase().includes(ql));
+        const equipMatch = (lab.equipment || []).some(e => e.toLowerCase().includes(ql));
+        const visible = !ql || titleMatch || parentMatch || serviceMatch || equipMatch;
+
+        if (visible) { facVisible = true; academyVisible = true; anyVisible = true; matchCount++; }
+
+        const labDiv = document.createElement('div');
+        labDiv.className = 'lab';
+        if (!visible) labDiv.classList.add('hidden');
+        if (visible && ql) labDiv.classList.add('search-match', 'open');
+
+        const btn = document.createElement('button');
+        btn.className = 'lab-btn';
+        btn.innerHTML = `<span class="lab-title">${highlight(lab.title, ql)}</span><svg class="chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`;
+
+        const details = document.createElement('div');
+        details.className = 'lab-details';
+
+        const breadcrumb = document.createElement('div');
+        breadcrumb.className = 'lab-breadcrumb';
+        breadcrumb.innerHTML = `<span>${esc(academy.academy)}</span><span class="bc-sep">›</span><span>${esc(faculty.name)}</span><span class="bc-sep">›</span><span class="bc-leaf">${esc(lab.parent)}</span>`;
+        details.appendChild(breadcrumb);
+
+        const equipItems = (lab.equipment || []).map(e => `<li>${highlight(e, ql)}</li>`).join('');
+        const servItems = lab.services.map(s => `<li>${highlight(s, ql)}</li>`).join('');
+        const servOpen = ql && serviceMatch ? 'open' : '';
+        const equipOpen = ql && equipMatch ? 'open' : '';
+
+        const detailsBody = document.createElement('div');
+        detailsBody.innerHTML = `
+          <div class="detail-row"><span class="detail-label">Contact:</span>${highlight(lab.contact, ql)}</div>
+          <div class="detail-row" style="flex-direction: column;"><div class="dropdown-section ${servOpen}"><button class="dropdown-toggle" type="button"><span class="dropdown-toggle-label">Services<span class="dropdown-count">${lab.services.length}</span></span><svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button><div class="dropdown-body"><ul class="services-list">${servItems}</ul></div></div></div>
+          <div class="detail-row" style="flex-direction: column; border-bottom: none;"><div class="dropdown-section ${equipOpen}"><button class="dropdown-toggle" type="button"><span class="dropdown-toggle-label">Equipment<span class="dropdown-count">${(lab.equipment || []).length}</span></span><svg class="dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button><div class="dropdown-body"><ul class="equipment-list">${equipItems}</ul></div></div></div>`;
+        details.appendChild(detailsBody);
+
+        btn.addEventListener('click', () => labDiv.classList.toggle('open'));
+        details.querySelectorAll('.dropdown-toggle').forEach(t => t.addEventListener('click', e => { e.stopPropagation(); t.closest('.dropdown-section').classList.toggle('open'); }));
+        labDiv.appendChild(btn);
+        labDiv.appendChild(details);
+        labsGrid.appendChild(labDiv);
+      });
+
+      facDiv.appendChild(labsGrid);
+      if (!facVisible) facDiv.classList.add('hidden');
+      acDiv.appendChild(facDiv);
+    });
+
+    if (!academyVisible) acDiv.classList.add('hidden');
+    dir.appendChild(acDiv);
+  });
+
+  noRes.style.display = anyVisible ? 'none' : 'block';
+  updateResultsCount(matchCount, totalLabs, !!ql);
+  allExpanded = !!ql;
+  updateExpandBtn();
+}
+
+render('');
+document.getElementById('search').addEventListener('input', e => render(e.target.value));
+</script>
+</body>
+</html>
